@@ -27,20 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkGameOver() {
         if (wrongLetters.length >= maxWrongAttempts) {
             message.textContent = 'Game Over! The word was: ' + chosenWord;
-            document.removeEventListener('keydown', handleKeydown);
-            keys.forEach(key => key.removeEventListener('click', handleKeyClick));
+            cleanUpGame();
         }
     }
 
     function checkWin() {
         if (!displayedWord.includes('_')) {
             message.textContent = 'Congratulations! You won!';
-            document.removeEventListener('keydown', handleKeydown);
+            cleanUpGame();
+        }
+    }
+
+    function cleanUpGame() {
+        document.removeEventListener('keydown', handleKeydown);
             keys.forEach(key => key.removeEventListener('click', handleKeyClick));
             setTimeout(() => {
                 wipeUpAndDisappear();
             }, 1500)
-        }
     }
 
     function handleKeydown(event) {
