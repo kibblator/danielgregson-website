@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const emailAddress = document.getElementById('emailAddress')
+
     const chosenWord = "dpgregson@hotmail.com";
     let displayedWord = chosenWord.split('').map(char => /[a-z]/.test(char) ? '_' : char);
     let wrongLetters = [];
@@ -35,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
             message.textContent = 'Congratulations! You won!';
             document.removeEventListener('keydown', handleKeydown);
             keys.forEach(key => key.removeEventListener('click', handleKeyClick));
+            setTimeout(() => {
+                wipeUpAndDisappear();
+            }, 1500)
         }
     }
 
@@ -72,6 +77,34 @@ document.addEventListener('DOMContentLoaded', () => {
         updateHangmanDisplay();
         checkWin();
         checkGameOver();
+    }
+
+    function wipeUpAndDisappear() {
+        const gameContainer = document.getElementById('game-container');
+        const totalDuration = 2500;
+        const interval = 50;
+        const stepCount = totalDuration / interval;
+        let currentStep = 0; 
+
+        gameContainer.style.transition = 'transform 2.5s ease-in-out, opacity 2.5s ease-in-out';
+        gameContainer.style.transform = 'translateY(-100%)';
+        gameContainer.style.opacity = '0';
+        
+        function step() {
+            currentStep++;
+            const progress = currentStep / stepCount;
+            const height = (1 - progress) * gameContainer.scrollHeight + 'px'
+            gameContainer.style.height = height;
+            if (currentStep < stepCount) {
+                requestAnimationFrame(step);
+            } else {
+                gameContainer.style.height = '0';
+                gameContainer.style.visibility = 'hidden';
+                emailAddress.textContent += chosenWord;
+            }
+        }
+    
+        requestAnimationFrame(step);
     }
 
     document.addEventListener('keydown', handleKeydown);
