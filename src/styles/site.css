@@ -40,18 +40,3 @@ h1, h2 {
 .section p {
     margin: 10px 0;
 }
-#snake-game-container {
-    margin: 0 auto;
-    justify-content: center;
-    align-items: center;
-    height: 600px;
-    width: 600px;
-    background-color: #000;
-}
-
-canvas {
-    background-color: #111;
-    display: block;
-    width: 600px;
-    height: 600px;
-}

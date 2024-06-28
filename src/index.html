@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Gregson - CV</title>
-    <script src="./scripts/snake.js"></script>
+    <script src="./scripts/hangman.js"></script>
     <link rel="stylesheet" href="./styles/site.css"> 
+    <link rel="stylesheet" href="./styles/hangman.css"> 
 </head>
 <body>
     <div class="container">
@@ -48,10 +49,16 @@
             <h2>Contact</h2>
             <p id="emailAddress"></p>
             <p>Contact details...</p>
+            <div id="game-container">
+                <p id="wordDisplay">_ _ _ _ _</p>
+                <p id="message"></p>
+                <div id="wrongLettersContainer">
+                    <p>Wrong Letters:</p>
+                    <p id="wrongLetters"></p>
+                </div>
+                <div id="hangman"></div>
+            </div>
         </div>     
-    </div>    
-    <div id="snake-game-container">
-        <canvas id="gameCanvas"></canvas>
-    </div>   
+    </div> 
 </body>
 </html>

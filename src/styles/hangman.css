@@ -1,0 +1,25 @@
+#game-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#wordDisplay {
+    font-size: 2rem;
+    margin: 20px 0;
+}
+
+#message {
+    color: red;
+    font-weight: bold;
+}
+
+#wrongLettersContainer {
+    margin-top: 20px;
+}
+
+#wrongLetters {
+    color: red;
+}
