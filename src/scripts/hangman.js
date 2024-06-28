@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const message = document.getElementById('message');
     const wrongLettersDisplay = document.getElementById('wrongLetters');
     const hangmanDisplay = document.getElementById('hangman');
+    const keys = document.querySelectorAll('.key');
 
     function updateWordDisplay() {
         wordDisplay.textContent = displayedWord.join(' ');
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (wrongLetters.length >= maxWrongAttempts) {
             message.textContent = 'Game Over! The word was: ' + chosenWord;
             document.removeEventListener('keydown', handleKeydown);
+            keys.forEach(key => key.removeEventListener('click', handleKeyClick));
         }
     }
 
@@ -32,12 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!displayedWord.includes('_')) {
             message.textContent = 'Congratulations! You won!';
             document.removeEventListener('keydown', handleKeydown);
+            keys.forEach(key => key.removeEventListener('click', handleKeyClick));
         }
     }
 
     function handleKeydown(event) {
-        message.textContent = '';
         const letter = event.key.toLowerCase();
+        processGuess(letter);
+    }
+
+    function handleKeyClick(event) {
+        const letter = event.target.textContent;
+        processGuess(letter);
+    }
+
+    function processGuess(letter) {
+        message.textContent = '';
         if (!/[a-z]/.test(letter) || letter.length > 1) {
             message.textContent = 'Please enter a valid letter.';
             return;
@@ -63,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('keydown', handleKeydown);
+    keys.forEach(key => key.addEventListener('click', handleKeyClick));
 
     updateWordDisplay();
     updateWrongLettersDisplay();

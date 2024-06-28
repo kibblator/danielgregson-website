@@ -4,6 +4,7 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 90%;
 }
 
 #wordDisplay {
@@ -22,4 +23,34 @@
 
 #wrongLetters {
     color: red;
+}
+
+#hangman {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: red;
+}
+
+.keyboard {
+    margin-top: 20px;
+}
+
+.keyboard .row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.keyboard .key {
+    padding: 10px;
+    margin: 0 5px;
+    font-size: 1.2rem;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.keyboard .key:active {
+    background-color: #bbb;
 }
