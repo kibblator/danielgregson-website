@@ -1,7 +1,6 @@
 #game-container {
     background: white;
     padding: 20px;
-    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 95%;
@@ -14,6 +13,7 @@
 #wordDisplay {
     font-size: 2rem;
     margin: 20px 0;
+    word-wrap: break-word;
 }
 
 #message {
@@ -46,6 +46,7 @@
 }
 
 .keyboard .key {
+    min-width: 40px;
     padding: 10px;
     margin: 0 5px;
     font-size: 1.2rem;
