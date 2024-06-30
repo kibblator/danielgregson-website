@@ -38,6 +38,7 @@ h1, h2 {
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .nav-links li {
@@ -56,6 +57,7 @@ h1, h2 {
     background-color: #0073b1;
     color: #fff;
 }
+
 
 .linkedin-logo {
     width: 24px;
