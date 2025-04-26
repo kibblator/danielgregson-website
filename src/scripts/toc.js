@@ -11,7 +11,7 @@ let lifetimeAvailable = 0;
 let lifetimeWasted = 0;
 
 const lifetimeWastedSpan = document.createElement("span");
-lifetimeWastedSpan.innerText = "Waste 0%";
+lifetimeWastedSpan.innerText = "Lifetime Wastage 0%";
 
 const diceFaces = [
   "./images/toc/die1.png",
@@ -166,7 +166,7 @@ function render() {
     const lifetimeWastedPercent = Math.round(
       (lifetimeWasted / lifetimeAvailable) * 100
     );
-    lifetimeWastedSpan.innerText = `Total Waste ${lifetimeWastedPercent}%`;
+    lifetimeWastedSpan.innerText = `Lifetime Wastage ${lifetimeWastedPercent}%`;
   }
 }
 
