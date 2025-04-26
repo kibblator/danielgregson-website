@@ -25,6 +25,10 @@
     align-items: center;
 }
 
+.station > span {
+    margin-top: 10px;
+}
+
 .bowl {
     width: 60px;
     height: 60px;
@@ -64,17 +68,39 @@
     transform-style: preserve-3d;
     transform: rotateX(0deg) rotateZ(0deg);
     transition: transform 1s ease-out;
+    cursor: pointer;
+}
+
+.dice-img.disabled {
+    opacity: 40%;
+    cursor: default;
 }
 
 .dice-roll {
     animation: rollDice 2s infinite ease-in-out;
 }
 
-button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    font-size: 16px;
+.roll-all {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #0073b1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
     cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.roll-all:hover {
+    background-color: #005f8d;
+}
+
+.roll-all-container {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
 }
 
 @keyframes rollDice {

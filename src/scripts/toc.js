@@ -2,6 +2,16 @@ const NUM_STATIONS = 6;
 const bowls = [];
 const bowlData = [];
 let currentPlayer = 0;
+let wastePercentage = 0;
+let maxAvailable = 0;
+let totalWasted = 0;
+let totalMoved = 0;
+
+let lifetimeAvailable = 0;
+let lifetimeWasted = 0;
+
+const lifetimeWastedSpan = document.createElement("span");
+lifetimeWastedSpan.innerText = "Waste 0%";
 
 const diceFaces = [
   "./images/toc/die1.png",
@@ -14,45 +24,64 @@ const diceFaces = [
 
 const container = document.getElementById("production-line");
 
-for (let i = 0; i < NUM_STATIONS; i++) {
-  const station = document.createElement("div");
-  station.className = "station";
+function createStations() {
+  for (let i = 0; i < NUM_STATIONS; i++) {
+    const station = document.createElement("div");
+    station.className = "station";
 
-  const bowl = document.createElement("div");
-  bowl.className = "bowl";
+    const bowl = document.createElement("div");
+    bowl.className = "bowl";
 
-  const dice = document.createElement("img");
-  dice.className = "dice-img";
-  dice.src = diceFaces[0];
+    const dice = document.createElement("img");
+    dice.addEventListener("click", async () => await rollDice(i));
+    dice.className = "dice-img";
+    if (i !== currentPlayer) {
+      dice.classList.add("disabled");
+    }
+    dice.src = diceFaces[0];
 
-  const rollButton = document.createElement("button");
-  rollButton.textContent = "Roll";
-  rollButton.onclick = () => rollDice(i);
-  rollButton.disabled = i !== currentPlayer;
+    const wastePercentageSpan = document.createElement("span");
+    wastePercentageSpan.innerText = "Waste 0%";
 
-  station.appendChild(bowl);
-  station.appendChild(dice);
-  station.appendChild(rollButton);
-  container.appendChild(station);
+    station.appendChild(bowl);
+    station.appendChild(dice);
+    station.appendChild(wastePercentageSpan);
+    container.appendChild(station);
 
-  bowls.push({ bowl, dice, rollButton });
-  bowlData.push(0);
+    bowls.push({ bowl, dice, wastePercentageSpan });
+    bowlData.push(0);
+  }
+
+  const rollAllContainer = document.createElement("div");
+  rollAllContainer.className = "roll-all-container";
+
+  const rollAll = document.createElement("button");
+  rollAll.className = "roll-all";
+  rollAll.innerText = "Roll Round";
+  rollAll.onclick = () => rollAllInSequence();
+
+  rollAllContainer.appendChild(rollAll);
+  rollAllContainer.appendChild(lifetimeWastedSpan);
+
+  container.appendChild(rollAllContainer);
 }
 
-bowlData[0] = 0;
-render();
+async function rollAllInSequence() {
+  for (var i = 0; i < NUM_STATIONS; i++) {
+    await rollDice(i);
+  }
+}
 
-function rollDice(index) {
+async function rollDice(index) {
   if (index !== currentPlayer) return;
 
-  bowls[index].rollButton.disabled = true;
-  startDiceAnimation(index);
+  bowls[index].dice.classList.add("disabled");
 
-  setTimeout(() => {
-    const roll = rollDie();
-    updateDie(index, roll);
-    handleMatchstickMove(index, roll);
-  }, 2000);
+  startDiceAnimation(index);
+  await wait(2000);
+  const roll = rollDie();
+  updateDie(index, roll);
+  handleMatchstickMove(index, roll);
 }
 
 function startDiceAnimation(index) {
@@ -86,13 +115,34 @@ function updateDie(index, value) {
 }
 
 function handleMatchstickMove(index, roll) {
-  const available = index == 0 ? roll : bowlData[index - 1];
+  if (index == 0) {
+    available = roll;
+    maxAvailable = roll;
+    lifetimeAvailable += maxAvailable;
+  } else {
+    available = bowlData[index - 1];
+  }
+
   const moved = Math.min(roll, available);
+  const waste = Math.round(((available - moved) / available) * 100);
+
+  bowls[index].wastePercentageSpan.innerText = `Waste ${waste}%`;
+
   bowlData[index] += moved;
   bowlData[index - 1] -= moved;
 
   currentPlayer = (currentPlayer + 1) % NUM_STATIONS;
+
+  if (index + 1 == NUM_STATIONS) {
+    const turnWaste = maxAvailable - moved;
+    lifetimeWasted += turnWaste;
+  }
+
   render();
+}
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function render() {
@@ -104,6 +154,20 @@ function render() {
       stick.className = "matchstick";
       bowl.appendChild(stick);
     }
-    station.rollButton.disabled = i !== currentPlayer;
+
+    if (i !== currentPlayer) {
+      station.dice.classList.add("disabled");
+    } else {
+      station.dice.classList.remove("disabled");
+    }
   });
+
+  if (lifetimeAvailable && lifetimeWasted) {
+    const lifetimeWastedPercent = Math.round(
+      (lifetimeWasted / lifetimeAvailable) * 100
+    );
+    lifetimeWastedSpan.innerText = `Total Waste ${lifetimeWastedPercent}%`;
+  }
 }
+
+createStations();
